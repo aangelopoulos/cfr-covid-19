@@ -6,7 +6,9 @@ source("./R_reich/CFR_estimation.R")
 # Parameters 
 DESIRED_L = 20 # Length of the tail of the death distribution, in days. For all results paper, this was 20.
 MTTD = 14 # Mean Time To Death
-FILE = "./numpy_data/China_Iran.npy" # The relative CFR will be calculated as (CFR2)/(CFR1)
+COUNTRY1 = "China"
+COUNTRY2 = "Iran"
+FILE = paste("./numpy_data/",COUNTRY1,"_",COUNTRY2,".npy",sep="") # The relative CFR will be calculated as (CFR2)/(CFR1)
 
 
 # As before a lot of this code is taken from the vignette in coarseDataTools

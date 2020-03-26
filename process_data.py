@@ -90,4 +90,4 @@ if __name__ == "__main__":
     np.save('./numpy_data/dead.npy', dead_daily)
     np.save('./numpy_data/cases.npy',conf_daily)
     np.save('./numpy_data/mat.npy',mat)
-    plt.show()
+    #plt.show()

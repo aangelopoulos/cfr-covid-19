@@ -117,5 +117,5 @@ if __name__ == "__main__":
     plot_estimator(naive_est(RI,DI,CI),fig="Estimators",label="naive estimate")
     plot_estimator(resolved_est(RI,DI,CI),fig="Estimators",label="observed estimate")
     plot_estimator(lagged_est(RI,DI,CI),fig="Estimators",label="5-day lagged estimate")
-    plt.show()
+    #plt.show()
     save_formatted_data(C,R,D)
