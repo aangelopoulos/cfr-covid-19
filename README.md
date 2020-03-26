@@ -24,3 +24,8 @@ We use R for the estimation and python to parse the CSSE data. Run `process_data
 Then, run `Rscript global_cfr.r` for the global estimation performed in Table 1 of our paper, and run `Rscript relative_cfr.r` for the estimation by country.
 In order to change the relative cfr estimate, inside `relative_cfr.r`, change the line `FILE=...` to `FILE="./numpy_data/Country1_Country2.npy". 
 For example, `FILE="./numpy_data/China_Italy.npy"`
+
+Ignore the warnings resulting from the EM procedure. (See coarseDataTools for details on this).
+
+# Contact
+mylastnameatberkeleydotedu
