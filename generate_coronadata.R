@@ -25,4 +25,9 @@ jh_data <- left_join(confirmed, recovered, by = c("Country.Region", "Province.St
   # Create a difference matrix
   do(data.frame(time = 1:I(length(.$recovered)-1), recovered = diff(.$recovered), deaths = diff(.$deaths), confirmed = diff(.$confirmed)))
 
-jh_data$Country.Region <- forcats::fct_recode(jh_data$Country.Region, `1` = COUNTRY1, `2` = COUNTRY2)
+jh_data$Country.Region <- forcats::fct_recode(jh_data$Country.Region, `1` = COUNTRY1, `2` = COUNTRY2) %>% as.character() %>% as.numeric()
+
+jh_mat <- as.matrix(jh_data)
+jh_mat <- jh_mat[,c(2,1,3,4,5)]
+
+colnames(jh_mat) <- c("time", "grp", "R", "D", "N")
