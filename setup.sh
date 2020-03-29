@@ -5,6 +5,7 @@ if [ -d "./COVID-19/csse_covid_19_data" ]
 then
     echo "Updating contents of COVID-19."
     cd COVID-19
+    git stash
     git pull
     cd ..
 else

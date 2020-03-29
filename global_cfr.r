@@ -1,11 +1,11 @@
 rm(list = ls())
 library("RcppCNPy")
-setwd("/home/aa/Code/Berkeley/corona")
-source("./R_reich/CFR_estimation.R")
+#setwd(".")
+source("./reich/CFR_estimation.R")
 
 # Parameters
 L = 20 # The length of the tail of the distribution of time to death. Was 20 for all experiments in our paper.
-mus = 1:14 # The values you want to test for mean time to death.
+mus = 14:14 # The values you want to test for mean time to death.
 x = 1:L 
 coronadata = npyLoad("./numpy_data/mat.npy") # Import from the processed data
 

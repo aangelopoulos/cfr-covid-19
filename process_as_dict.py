@@ -1,9 +1,6 @@
-GLOBALCONFIRMED = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
-GLOBALDEATHS = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv'
-
-DEPRCONFIRMED = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv'
-DEPRDEATHS = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv'
-DEPRRECOVERED = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv'
+FILECONFIRMED = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
+FILEDEATHS = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv'
+FILERECOVERED = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv'
 
 import csv
 import pdb
@@ -86,8 +83,7 @@ def csv2dict(data_file,colcut=4):
 
 if __name__ == "__main__":
     # The rows are cities, the columns are time points.
-    C = csv2dict(GLOBALCONFIRMED)
-    D = csv2dict(GLOBALDEATHS)
-    C_D = csv2dict(DEPRCONFIRMED)
-    D_D = csv2dict(DEPRDEATHS)
-    R_D = csv2dict(DEPRRECOVERED)
+    C = csv2dict(FILECONFIRMED)
+    R = csv2dict(FILERECOVERED)
+    D = csv2dict(FILEDEATHS)
+    pdb.set_trace()

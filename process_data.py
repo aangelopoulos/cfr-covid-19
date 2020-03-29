@@ -1,6 +1,7 @@
-FILECONFIRMED = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv'
-FILEDEATHS = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv'
-FILERECOVERED = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv'
+FILECONFIRMED = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
+FILEDEATHS = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv'
+FILERECOVERED = './COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv'
+
 import csv
 import pdb
 import numpy as np
@@ -74,7 +75,8 @@ if __name__ == "__main__":
     dead = np.sum(dead,axis=0)
     conf = np.sum(conf,axis=0)
     reso = recd+dead
-    print(dead[-1]/(dead[-1]+recd[-1]))
+    print(f"Naive: {dead[-1]/(conf[-1])}")
+    print(f"Obs: {dead[-1]/(dead[-1]+recd[-1])}")
     plot_curves([recd,dead,conf,reso],labels=["total recoveries","total deaths","total cases","total recoveries and deaths"],fig="Raw Data")
     plot_estimator(naive_est(recd,dead,conf),fig="Estimators",label="naive estimate")
     plot_estimator(resolved_est(recd,dead,conf),fig="Estimators",label="observed estimate")

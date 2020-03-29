@@ -368,6 +368,9 @@ run.Estep <- function(alpha, full.data, nlag, assumed.nu){
 			N.idx <- (t+i-1):(t+i-nlag)
 			nu.idx <- 1:length(N.idx)
 			## group 1
+			if(any(N.idx<1)) {
+			  browser() # This is an error in the Reich code.
+			}
 			denom.1[i] <- sum(assumed.nu[nu.idx]*N.1[N.idx]*exp(alpha.long[N.idx]))
 			## group 2
 			denom.2[i] <- sum(assumed.nu[nu.idx]*N.2[N.idx]*exp(alpha.long[N.idx]))
