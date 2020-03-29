@@ -1,5 +1,6 @@
 reindex_time <- function(data,L) {
   total_time = dim(data)[1]/2
+  browser()
   rownames(data) <- 1:(2*total_time)
   N.1 = unname(data[1:total_time, "N"])
   N.2 = unname(data[(total_time+1):(total_time*2), "N"])

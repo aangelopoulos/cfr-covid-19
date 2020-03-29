@@ -8,7 +8,7 @@ source("./reindex_time.R")
 # Parameters 
 DESIRED_L = 20 # Length of the tail of the death distribution, in days. For all results paper, this was 20.
 MTTD = 14 # Mean Time To Death
-COUNTRY1 = "China"
+COUNTRY1 = "Iran"
 COUNTRY2 = "Iran"
 set.seed(0) #For reproducibility. Can be changed without affecting anything.
 min.cases <- 100
