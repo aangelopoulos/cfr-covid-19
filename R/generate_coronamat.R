@@ -1,6 +1,7 @@
-
 generate_coronamat <- function(COUNTRY1, COUNTRY2, L, loc_list = list("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv", "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")){
 
+  source("./R/simulate_reference_distribution.R")
+  
   confirmed <- read.csv(loc_list[[1]]) %>%
     jh_process("confirmed")
   
@@ -24,18 +25,26 @@ generate_coronamat <- function(COUNTRY1, COUNTRY2, L, loc_list = list("https://r
   jh_data$Country.Region <- forcats::fct_recode(jh_data$Country.Region, `1` = COUNTRY1, `2` = COUNTRY2) %>% as.character() %>% as.numeric()
   
   jh_mat <- as.matrix(jh_data)
+
+  # Fix error if countries are the same
+  if(COUNTRY1==COUNTRY2) {
+    len = dim(jh_mat)[1]
+    ref = simulate_reference_distribution(jh_mat,T=len)
+    jh_mat = rbind(ref,jh_mat)
+  }
+  
   jh_mat <- jh_mat[,c(2,1,3,4,5)]
   
   colnames(jh_mat) <- c("time", "grp", "R", "D", "N")
   
-  #jh_mat = jh_mat[-(35:66),]
-  #jh_mat = jh_mat[-(35:66),]
-  #jh_mat[31:68,"time"] = 1:38
-  
   # Pad with L zeros. This is to protect against assumed.nu being too big.
+  # Meanwhile, align the curves by aligning the beginning of each outbreak.
   time_orig = dim(jh_mat)[1]/2
   c1 = jh_mat[1:time_orig,]
   c2 = jh_mat[(time_orig+1):(time_orig*2),]
+  #TODO: Curve alignment:
+  #t1 = min(which(c1[,"N"]>100))
+  #t2 = min(which(c2[,"N"]>100))
   c1[,"time"] = c1[,"time"] + L
   c2[,"time"] = c2[,"time"] + L
   z1 = cbind(c(1:L),rep(1,L),rep(0,L),rep(0,L),rep(0,L))

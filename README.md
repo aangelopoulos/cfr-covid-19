@@ -20,10 +20,9 @@ All R dependencies are included in the Dockerfile.
 The python dependencies are standard.
 
 # Usage
-We use R for the estimation and python to parse the CSSE data. Run `process_data.py` and `process_data_bystate.py` to generate numpy arrays which the R script will read.
+We use R for the estimation and python to parse the CSSE data. 
 Then, run `Rscript global_cfr.r` for the global estimation performed in Table 1 of our paper, and run `Rscript relative_cfr.r` for the estimation by country.
-In order to change the relative cfr estimate, inside `relative_cfr.r`, change the line `FILE=...` to `FILE="./numpy_data/Country1_Country2.npy". 
-For example, `FILE="./numpy_data/China_Italy.npy"`
+In order to change the relative cfr estimate, inside `relative_cfr.r`, change COUNTRY1 and COUNTRY2. If COUNTRY1==COUNTRY2, then it will calculate the absolute CFR.
 
 Ignore the warnings resulting from the EM procedure. (See coarseDataTools for details on this).
 

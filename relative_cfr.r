@@ -4,16 +4,17 @@ library("RcppCNPy")
 source("./reich/CFR_estimation.R")
 source("./R/jh_process.R")
 source("./R/generate_coronamat.R")
-source("./reindex_time.R")
+source("./R/reindex_time.R")
 # Parameters 
 DESIRED_L = 20 # Length of the tail of the death distribution, in days. For all results paper, this was 20.
 MTTD = 14 # Mean Time To Death
-COUNTRY1 = "Iran"
-COUNTRY2 = "Iran"
+COUNTRY1 = "Italy"  # Do not use this method for USA; it relies on having reliable recovery data, which the US doesn't.
+COUNTRY2 = "Italy"
 set.seed(0) #For reproducibility. Can be changed without affecting anything.
 min.cases <- 100
 # Changing the distribution of deaths can have a large effect especially in the low data regime.
-assumed.nu=pnorm(1:DESIRED_L,mean=MTTD,sd=8.0)
+assumed.nu=dnorm(1:DESIRED_L,mean=MTTD,sd=1)
+assumed.nu[assumed.nu<5e-2] = 0
 #assumed.nu = c(rep(0,4),rep(1,14),rep(0,2))
 assumed.nu = assumed.nu/sum(assumed.nu)
 #print(assumed.nu)
@@ -27,6 +28,8 @@ data = data[,-6]
 out_list = reindex_time(data,DESIRED_L)
 data = out_list["data"][[1]]
 T = out_list["T"][[1]]
+first.t = out_list["first.t"][[1]]
+last.t = out_list["last.t"][[1]]
 total_time = dim(data)[1]/2
 
 alpha.start <- runif(T-1)
@@ -46,6 +49,15 @@ D.1 = unname(data[1:total_time, "D"])
 D.2 = unname(data[(total_time+1):(total_time*2), "D"])
 R.1 = unname(data[1:total_time, "R"])
 R.2 = unname(data[(total_time+1):(total_time*2), "R"])
+N.1 = unname(data[1:total_time, "N"])
+N.2 = unname(data[(total_time+1):(total_time*2), "N"])
 
-print(cfr.out["EMconv"])
-print(cfr.out["EM.rel.cfr"])
+if(COUNTRY1==COUNTRY2) {
+  print(cfr.out["EMconv"])
+  abs.cfr = cfr.out["EM.rel.cfr"][[1]]
+  print("Absolute CFR")
+  print(abs.cfr)
+} else {
+  print(cfr.out["EMconv"])
+  print(cfr.out["EM.rel.cfr"])
+}
