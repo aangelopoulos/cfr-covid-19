@@ -23,6 +23,7 @@ generate_coronamat <- function(COUNTRY1, COUNTRY2, L, loc_list = list("https://r
     do(data.frame(time = 1:I(length(.$recovered)-1), recovered = diff(.$recovered), deaths = diff(.$deaths), confirmed = diff(.$confirmed)))
   
   jh_data$Country.Region <- forcats::fct_recode(jh_data$Country.Region, `1` = COUNTRY1, `2` = COUNTRY2) %>% as.character() %>% as.numeric()
+  jh_data <- jh_data %>% arrange(Country.Region)
   
   jh_mat <- as.matrix(jh_data)
 
