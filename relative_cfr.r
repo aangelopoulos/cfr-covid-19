@@ -5,10 +5,15 @@ source("./reich/CFR_estimation.R")
 source("./R/jh_process.R")
 source("./R/generate_coronamat.R")
 source("./R/reindex_time.R")
+source("./R/myassert.R")
+#GLOBAL
+ASSERT_STOP = FALSE # If you want the program to try and continue past my asserts, set this to FALSE.
+
 # Parameters 
+# Note with DESIRED_L: If DESIRED_L is greater than the length of the outbreak (starting at the first index with min.cases), then you will get an error.
 DESIRED_L = 20 # Length of the tail of the death distribution, in days. For all results paper, this was 20.
 MTTD = 14 # Mean Time To Death
-COUNTRY1 = "Germany"  # Do not use this method for USA; it relies on having reliable recovery data, which the US doesn't.
+COUNTRY1 = "Germany"  # Apparently the US does not have great recovery data (according to JHU).
 COUNTRY2 = "Italy"
 set.seed(0) #For reproducibility. Can be changed without affecting anything.
 min.cases <- 100
@@ -18,6 +23,8 @@ assumed.nu[assumed.nu<5e-2] = 0
 #assumed.nu = c(rep(0,4),rep(1,14),rep(0,2))
 assumed.nu = assumed.nu/sum(assumed.nu)
 #print(assumed.nu)
+
+assert("ERROR: The assumed distribution of deaths in time contains all zeros. Make sure the MTTD is within the range 1:DESIRED_L.",!any(is.nan(assumed.nu)))
 
 data = generate_coronamat(COUNTRY1,COUNTRY2,DESIRED_L+2)
 
@@ -32,6 +39,7 @@ data = out_list["data"][[1]]
 T = out_list["T"][[1]]
 first.t = out_list["first.t"][[1]]
 last.t = out_list["last.t"][[1]]
+
 total_time = dim(data)[1]/2
 
 alpha.start <- 5*runif(T-1)
