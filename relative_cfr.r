@@ -8,8 +8,8 @@ source("./R/reindex_time.R")
 # Parameters 
 DESIRED_L = 20 # Length of the tail of the death distribution, in days. For all results paper, this was 20.
 MTTD = 14 # Mean Time To Death
-COUNTRY1 = "Norway"  # Do not use this method for USA; it relies on having reliable recovery data, which the US doesn't.
-COUNTRY2 = "Sweden"
+COUNTRY1 = "Korea, South"  # Do not use this method for USA; it relies on having reliable recovery data, which the US doesn't.
+COUNTRY2 = "Germany"
 set.seed(0) #For reproducibility. Can be changed without affecting anything.
 min.cases <- 100
 # Changing the distribution of deaths can have a large effect especially in the low data regime.
@@ -20,6 +20,8 @@ assumed.nu = assumed.nu/sum(assumed.nu)
 #print(assumed.nu)
 
 data = generate_coronamat(COUNTRY1,COUNTRY2,DESIRED_L+2)
+
+#data [,"N"] = data[,"R"] + data[,"D"]  # Use this if you only want to consider recovered and deaths (not recommended)
 
 # This code fixes some errors in the JHU dataset (negative entries, all-zero rows).
 data = reindex_time(data,DESIRED_L)["data"][[1]]
