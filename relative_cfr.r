@@ -8,8 +8,8 @@ source("./R/reindex_time.R")
 # Parameters 
 DESIRED_L = 20 # Length of the tail of the death distribution, in days. For all results paper, this was 20.
 MTTD = 14 # Mean Time To Death
-COUNTRY1 = "Korea, South"  # Do not use this method for USA; it relies on having reliable recovery data, which the US doesn't.
-COUNTRY2 = "Germany"
+COUNTRY1 = "Germany"  # Do not use this method for USA; it relies on having reliable recovery data, which the US doesn't.
+COUNTRY2 = "Italy"
 set.seed(0) #For reproducibility. Can be changed without affecting anything.
 min.cases <- 100
 # Changing the distribution of deaths can have a large effect especially in the low data regime.
