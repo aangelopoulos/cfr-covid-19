@@ -13,7 +13,7 @@ https://github.com/CSSEGISandData/COVID-19
 Dong, E., Du, H., & Gardner, L. (2020). An interactive web-based dashboard to track COVID-19 in real time. The Lancet Infectious Diseases.
 
 Thank you:
-Anthony Ebert helped write the generate_coronamat function in R, since I was doing it in Python in past versions. He has also pointed out a couple of bugs. This helped consolidate the code and improved consistency, so thank you Anthony.  Check his GitHub, https://github.com/AnthonyEbert/ItalyCovid19, for an interface to Italy's data and an R package incorporating our code.  
+Anthony Ebert helped write the generate_coronamat function in R, since I was doing it in Python in past versions. He has also pointed out a couple of bugs. This helped consolidate the code and improved consistency, so thank you Anthony.  Check his GitHub, https://github.com/AnthonyEbert/COVID19data, for an interface to Italy's data and an R package incorporating our code.  
 
 # Dependencies
 I have to update the Dockerfile within the next few days, but most dependencies are there, and others are standard in CRAN.
