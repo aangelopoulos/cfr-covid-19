@@ -1,4 +1,4 @@
-generate_coronamat <- function(COUNTRY1, COUNTRY2, L, loc_list = list("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv", "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")){
+generate_coronamat <- function(COUNTRY1, COUNTRY2, L, enddate, min.cases=100, realign=FALSE, loc_list = list("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv", "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")){
 
   source("./R/simulate_reference_distribution.R")
   
@@ -27,25 +27,44 @@ generate_coronamat <- function(COUNTRY1, COUNTRY2, L, loc_list = list("https://r
 
   jh_mat <- as.matrix(jh_data)
 
-  # Fix error if countries are the same
-  if(COUNTRY1==COUNTRY2) {
-    len = dim(jh_mat)[1]
-    ref = simulate_reference_distribution(jh_mat,T=len)
-    jh_mat = rbind(ref,jh_mat)
+  if(COUNTRY1==COUNTRY2){
+    ttotal = dim(jh_mat)[1]
+    jh_mat1 = jh_mat
+    jh_mat1[,"Country.Region"] = 1
+    jh_mat = rbind(jh_mat1,jh_mat)
   }
+  # Simulation if countries are the same
+  #if(COUNTRY1==COUNTRY2) {
+  #  len = dim(jh_mat)[1]
+  #  ref = simulate_reference_distribution(jh_mat,T=len)
+  #  jh_mat = rbind(ref,jh_mat)
+  #}
   
   jh_mat <- jh_mat[,c(2,1,3,4,5)]
   
   colnames(jh_mat) <- c("time", "grp", "R", "D", "N")
-  
-  # Pad with L zeros. This is to protect against assumed.nu being too big.
-  # Meanwhile, align the curves by aligning the beginning of each outbreak.
   time_orig = dim(jh_mat)[1]/2
-  c1 = jh_mat[1:time_orig,]
-  c2 = jh_mat[(time_orig+1):(time_orig*2),]
-  #TODO: Curve alignment:
-  #t1 = min(which(c1[,"N"]>100))
-  #t2 = min(which(c2[,"N"]>100))
+  
+  if(is.na(enddate)){
+    enddate=time_orig
+  }
+  
+  c1 = jh_mat[1:time_orig,][1:enddate,]
+  c2 = jh_mat[(time_orig+1):(time_orig*2),][1:enddate,]
+  
+  # Curve alignment (method is not robust to epidemics starting at vastly different times):
+  ts1 = min(which(c1[,"N"]>min.cases))
+  ts2 = min(which(c2[,"N"]>min.cases))
+  if(ts1>ts2) {
+    c1[,"N"] = c(c1[-(1:(ts1-ts2)),"N"],rep(0,ts1-ts2))
+    c1[,"D"] = c(c1[-(1:(ts1-ts2)),"D"],rep(0,ts1-ts2))
+    c1[,"R"] = c(c1[-(1:(ts1-ts2)),"R"],rep(0,ts1-ts2))
+  } else if(ts2>ts1) {
+    c2[,"N"] = c(c2[-(1:(ts2-ts1)),"N"],rep(0,ts2-ts1))
+    c2[,"D"] = c(c2[-(1:(ts2-ts1)),"D"],rep(0,ts2-ts1))
+    c2[,"R"] = c(c2[-(1:(ts2-ts1)),"R"],rep(0,ts2-ts1))
+  }
+  # Pad with L zeros. This is to protect against assumed.nu being too big.
   c1[,"time"] = c1[,"time"] + L
   c2[,"time"] = c2[,"time"] + L
   z1 = cbind(c(1:L),rep(1,L),rep(0,L),rep(0,L),rep(0,L))
