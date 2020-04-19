@@ -1,10 +1,13 @@
 rm(list = ls())
-source("./generate_cfr_plot.r")
+source("./generate_cfr_data.r")
+source("./plot_cfr_timeseries.r")
 library("parallel")
+
+args = commandArgs(trailingOnly=TRUE)
 
 start = 70
 end = 86
-maxiters=2000
+maxiters=50
 numCores = detectCores()
 print(numCores)
 
@@ -24,15 +27,13 @@ L = list(
 fx <- function(L) {
     c1=L["COUNTRY1"][[1]]
     c2=L["COUNTRY2"][[1]]
-    print(c1)
-    generate_cfr_plot(c1,c2,start=start,end=end,maxiters=maxiters)
+    df = NA
+    if((length(args)==1) & (args[1] == "-newdata")) {
+        df = generate_cfr_data(c1,c2,start=start,end=end,maxiters=maxiters)
+    } else {
+        df = read.csv(file=paste0("./plots/",c1,c2,".csv"),header=TRUE)
+    }
+    plot_cfr_timeseries(df,start,end)
 }
 
 results = mclapply(L, fx, mc.cores=numCores)
-
-#generate_cfr_plot("Korea, South","France",start=start,end=end,maxiters=maxiters)
-#generate_cfr_plot("Korea, South","Austria",start=start,end=end,maxiters=maxiters)
-#generate_cfr_plot("Korea, South","Spain",start=start,end=end,maxiters=maxiters)
-#generate_cfr_plot("Germany","Switzerland",start=start,end=end,maxiters=maxiters)
-#generate_cfr_plot("Germany","Iran",start=start,end=end,maxiters=maxiters)
-#generate_cfr_plot("Italy","United Kingdom",start=start,end=end,maxiters=maxiters)
