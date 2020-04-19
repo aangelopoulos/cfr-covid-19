@@ -1,7 +1,6 @@
 FROM rocker/r-apt:bionic
 #The next block determines what dependencies to load
-RUN R -e 'options(Ncpus = 1)'
-RUN R -e 'options(Ncpus = 12)'
+RUN R -e 'options(Ncpus = 20)'
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y -qq r-cran-coarsedatatools
 RUN apt-get install -y -qq r-cran-coda
