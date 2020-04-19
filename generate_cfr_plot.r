@@ -30,5 +30,5 @@ generate_cfr_plot <- function(COUNTRY1,COUNTRY2,start=35,end=86,ymax=30.0,maxite
     theme(axis.title.x=element_blank(),
           axis.text.x=element_blank(),)
   
-  ggsave(paste0("./plots/",COUNTRY1,COUNTRY2,".pdf"),device="pdf")
+  ggsave(paste0("./plots/",COUNTRY1,COUNTRY2,".pdf"),device="pdf",width=10,height=5,units="cm")
 }
