@@ -88,4 +88,4 @@ RUN apt-get install -y -qq r-cran-xfun
 RUN apt-get install -y -qq r-cran-yaml 
 
 COPY . .
-ENTRYPOINT ["Rscript","./cdt_real.r"]
+ENTRYPOINT ["Rscript","./main.r"]
