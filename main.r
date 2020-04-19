@@ -4,7 +4,7 @@ library("parallel")
 
 start = 70
 end = 86
-maxiters=10000
+maxiters=2000
 numCores = detectCores()
 print(numCores)
 
