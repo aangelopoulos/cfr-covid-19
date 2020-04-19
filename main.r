@@ -2,9 +2,9 @@ rm(list = ls())
 source("./generate_cfr_plot.r")
 library("parallel")
 
-start = 84
+start = 35
 end = 86
-maxiters=1000
+maxiters=10000
 numCores = detectCores()
 print(numCores)
 
