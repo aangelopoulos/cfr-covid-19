@@ -87,4 +87,4 @@ RUN apt-get install -y -qq r-cran-xfun
 RUN apt-get install -y -qq r-cran-yaml 
 
 COPY . .
-ENTRYPOINT ["Rscript","./main.r"]
+ENTRYPOINT ["Rscript","./main.r","-newdata"]

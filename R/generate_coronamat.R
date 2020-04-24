@@ -1,5 +1,4 @@
-generate_coronamat <- function(COUNTRY1, COUNTRY2, L, enddate, min.cases=100, realign=FALSE, loc_list = list("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv", "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")){
-
+generate_coronamat <- function(COUNTRY1, COUNTRY2, L, enddate, min.cases=100, realign=TRUE, loc_list = list("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv", "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")){
   source("./R/simulate_reference_distribution.R")
   
   confirmed <- read.csv(loc_list[[1]]) %>%
@@ -53,16 +52,18 @@ generate_coronamat <- function(COUNTRY1, COUNTRY2, L, enddate, min.cases=100, re
   c2 = jh_mat[(time_orig+1):(time_orig*2),][1:enddate,]
   
   # Curve alignment (method is not robust to epidemics starting at vastly different times):
-  ts1 = min(which(c1[,"N"]>min.cases))
-  ts2 = min(which(c2[,"N"]>min.cases))
-  if(ts1>ts2) {
-    c1[,"N"] = c(c1[-(1:(ts1-ts2)),"N"],rep(0,ts1-ts2))
-    c1[,"D"] = c(c1[-(1:(ts1-ts2)),"D"],rep(0,ts1-ts2))
-    c1[,"R"] = c(c1[-(1:(ts1-ts2)),"R"],rep(0,ts1-ts2))
-  } else if(ts2>ts1) {
-    c2[,"N"] = c(c2[-(1:(ts2-ts1)),"N"],rep(0,ts2-ts1))
-    c2[,"D"] = c(c2[-(1:(ts2-ts1)),"D"],rep(0,ts2-ts1))
-    c2[,"R"] = c(c2[-(1:(ts2-ts1)),"R"],rep(0,ts2-ts1))
+  if(realign) {
+      ts1 = min(which(c1[,"N"]>min.cases))
+      ts2 = min(which(c2[,"N"]>min.cases))
+      if(ts1>ts2) {
+        c1[,"N"] = c(c1[-(1:(ts1-ts2)),"N"],rep(0,ts1-ts2))
+        c1[,"D"] = c(c1[-(1:(ts1-ts2)),"D"],rep(0,ts1-ts2))
+        c1[,"R"] = c(c1[-(1:(ts1-ts2)),"R"],rep(0,ts1-ts2))
+      } else if(ts2>ts1) {
+        c2[,"N"] = c(c2[-(1:(ts2-ts1)),"N"],rep(0,ts2-ts1))
+        c2[,"D"] = c(c2[-(1:(ts2-ts1)),"D"],rep(0,ts2-ts1))
+        c2[,"R"] = c(c2[-(1:(ts2-ts1)),"R"],rep(0,ts2-ts1))
+      }
   }
   # Pad with L zeros. This is to protect against assumed.nu being too big.
   c1[,"time"] = c1[,"time"] + L

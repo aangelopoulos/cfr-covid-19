@@ -3,7 +3,7 @@
 #DESIRED_L = Length of the tail of the death distribution, in days. If DESIRED_L is greater than the length of the outbreak (starting at the first index with min.cases), then you will get an error.
 #MTTD = Mean Time To Death
 #STD = Standard deviation of distribution
-relative_cfr <- function(COUNTRY1,COUNTRY2, enddate=NA, min.cases=40, realign=FALSE, DESIRED_L=25, MTTD=15, STD=6.9, MAXITERS=10000) {
+relative_cfr <- function(COUNTRY1,COUNTRY2, enddate=NA, min.cases=40, realign=TRUE, DESIRED_L=25, MTTD=15, STD=6.9, MAXITERS=10000) {
   library("dplyr")
   library("RcppCNPy")
   source("./reich/CFR_estimation.R")
@@ -20,7 +20,7 @@ relative_cfr <- function(COUNTRY1,COUNTRY2, enddate=NA, min.cases=40, realign=FA
   
   assert("ERROR: The assumed distribution of deaths in time contains all zeros. Make sure the MTTD is within the range 1:DESIRED_L.",!any(is.nan(assumed.nu)))
   
-  data = generate_coronamat(COUNTRY1,COUNTRY2,DESIRED_L+2, min.cases=min.cases, enddate=enddate, realign=TRUE)
+  data = generate_coronamat(COUNTRY1,COUNTRY2,DESIRED_L+2, min.cases=min.cases, enddate=enddate, realign=realign)
 
   #data [,"N"] = data[,"R"] + data[,"D"]  # Use this if you only want to consider recovered and deaths (not recommended)
   total_time = dim(data)[1]/2
@@ -44,8 +44,9 @@ relative_cfr <- function(COUNTRY1,COUNTRY2, enddate=NA, min.cases=40, realign=FA
   last.t = out_list["last.t"][[1]]
   
   total_time = dim(data)[1]/2
-  
-  alpha.start <- 5*runif(T-1)
+ 
+  #data[1:total_time,"R"] = 10000000 # The time series of recoveries is never used in R_reich, and inserting this line of code has no effect.
+  alpha.start <- 5*runif(T-1) # I have never found that this initialization matters.
   ## caution! this next line may take several minutes (5-10, depanding on
   ## the speed of your machine) to run.
   cfr.out=NA
