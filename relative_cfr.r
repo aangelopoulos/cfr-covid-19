@@ -3,7 +3,9 @@
 #DESIRED_L = Length of the tail of the death distribution, in days. If DESIRED_L is greater than the length of the outbreak (starting at the first index with min.cases), then you will get an error.
 #MTTD = Mean Time To Death
 #STD = Standard deviation of distribution
-relative_cfr <- function(COUNTRY1,COUNTRY2, enddate=NA, min.cases=40, realign=TRUE, DESIRED_L=25, MTTD=15, STD=6.9, MAXITERS=10000) {
+#MAXITERS = Number of iterations
+#RIFFE = Experimental. Use the data from Tim Riffe's sex disaggregated dataset
+relative_cfr <- function(COUNTRY1,COUNTRY2=NA, enddate=NA, min.cases=10, realign=TRUE, DESIRED_L=25, MTTD=15, STD=6.9, MAXITERS=10000, riffe=FALSE) {
   library("dplyr")
   library("RcppCNPy")
   source("./reich/CFR_estimation.R")
@@ -11,6 +13,7 @@ relative_cfr <- function(COUNTRY1,COUNTRY2, enddate=NA, min.cases=40, realign=TR
   source("./R/generate_coronamat.R")
   source("./R/reindex_time.R")
   source("./R/myassert.R")
+  source("./R/generate_riffe_coronamat.R")
   
   set.seed(0) #For reproducibility. Can be changed without affecting anything.
   # Changing the distribution of deaths can have a large effect especially in the low data regime.
@@ -20,7 +23,11 @@ relative_cfr <- function(COUNTRY1,COUNTRY2, enddate=NA, min.cases=40, realign=TR
   
   assert("ERROR: The assumed distribution of deaths in time contains all zeros. Make sure the MTTD is within the range 1:DESIRED_L.",!any(is.nan(assumed.nu)))
   
-  data = generate_coronamat(COUNTRY1,COUNTRY2,DESIRED_L+2, min.cases=min.cases, enddate=enddate, realign=realign)
+  if(riffe) {
+    data = generate_riffe_coronamat(COUNTRY1)
+  } else {
+    data = generate_coronamat(COUNTRY1,COUNTRY2,DESIRED_L+2, min.cases=min.cases, enddate=enddate, realign=realign)
+  }
 
   #data [,"N"] = data[,"R"] + data[,"D"]  # Use this if you only want to consider recovered and deaths (not recommended)
   total_time = dim(data)[1]/2
