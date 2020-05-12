@@ -1,4 +1,4 @@
-# Identifying and Correcting Bias from Time- and Severity- Dependent Reporting Rates in the Estimation of the COVID-19 Case Fatality Rate
+# On Identifying and Mitigating Bias in the Estimation of the COVID-19 Case Fatality Rate
 ## Anastasios Nikolas Angelopoulos, Reese Pathak, Rohit Varma, Michael I. Jordan
 Associated preprint: https://arxiv.org/abs/2003.08592
 We welcome your feedback.
