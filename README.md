@@ -4,7 +4,7 @@ Associated paper: https://hdsr.mitpress.mit.edu/pub/y9vc2u36
 We welcome your feedback.
 If you find our work useful, please consider citing:
 
-'''
+```
 @article{Angelopoulos2020cfr,
     journal = {Harvard Data Science Review},
     note = {https://hdsr.mitpress.mit.edu/pub/y9vc2u36},
@@ -16,7 +16,7 @@ If you find our work useful, please consider citing:
     month = {5},
     day = {14},
 }
-'''
+```
 
 ## Credit
 We relied principally on the following references:
