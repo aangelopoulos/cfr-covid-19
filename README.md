@@ -4,19 +4,7 @@ Associated paper: https://hdsr.mitpress.mit.edu/pub/y9vc2u36
 We welcome your feedback.
 If you find our work useful, please consider citing:
 
-```
-@article{Angelopoulos2020cfr,
-    journal = {Harvard Data Science Review},
-    note = {https://hdsr.mitpress.mit.edu/pub/y9vc2u36},
-    title = {On Identifying and Mitigating Bias in the Estimation of the COVID-19 Case Fatality Rate},
-    url = {https://hdsr.mitpress.mit.edu/pub/y9vc2u36},
-    author = {Angelopoulos, Anastasios Nikolas and Pathak, Reese and Varma, Rohit and Jordan, Michael I.},
-    date = {2020-05-14},
-    year = {2020},
-    month = {5},
-    day = {14},
-}
-```
+Angelopoulos, A. N., Pathak, R., Varma, R., & Jordan, M. I. (2020). On Identifying and Mitigating Bias in the Estimation of the COVID-19 Case Fatality Rate. Harvard Data Science Review. Retrieved from https://hdsr.mitpress.mit.edu/pub/y9vc2u36
 
 ## Credit
 We relied principally on the following references:
